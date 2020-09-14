@@ -21,6 +21,11 @@ namespace HoneyBadgr.Api
 		public T Result { get; }
 
 		/// <summary>
+		/// The data of the response as a string.
+		/// </summary>
+		public string RawResult { get; }
+
+		/// <summary>
 		/// <see langword="true"/> if the <see cref="ResponseCode"/> is classed as an HTTP "success" status code.
 		/// </summary>
 		public bool Success
@@ -31,10 +36,22 @@ namespace HoneyBadgr.Api
 			}
 		}
 
-		public ApiCallResult(int responseCode, T result)
+		/// <summary>
+		/// True if the response body from the server was empty.
+		/// </summary>
+		public bool IsEmpty { get; }
+
+		public ApiCallResult()
+		{
+
+		}
+
+		public ApiCallResult(int responseCode, T result, string rawResult, bool isEmpty)
 		{
 			this.ResponseCode = responseCode;
 			this.Result = result;
+			this.RawResult = rawResult;
+			this.IsEmpty = isEmpty;
 		}
 	}
 }
