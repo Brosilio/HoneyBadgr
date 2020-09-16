@@ -52,17 +52,39 @@ namespace HoneyBadgr
 			return uri + $"{param}={value.ToString()}";
 		}
 
+
+		/// <summary>
+		/// Perform a GET request to the specified URI and deserialize the result into the specified type
+		/// </summary>
+		/// <typeparam name="T">The type to deserialize</typeparam>
+		/// <param name="uri">The URI of the resource</param>
+		/// <returns></returns>
 		private Task<ApiCallResult<T>> DoGetAsync<T>(string uri) where T : class
 		{
 			return DoRequestAsync<T>("GET", uri, null, null);
 		}
 
+		/// <summary>
+		/// Similar to <see cref="DoGetAsync{T}(string)"/>, except it unwraps a hidden, undocumented <see cref="StatusResult{T}"/>
+		/// because Badgr.io sucks and doesn't tell you about it
+		/// </summary>
+		/// <typeparam name="T">The type to deserialize</typeparam>
+		/// <param name="uri">The URI of the resource</param>
+		/// <returns></returns>
 		private async Task<ApiCallResult<T>> DoGetSRAsync<T>(string uri) where T : class
 		{
 			var sr = await DoGetAsync<StatusResult<T>>(uri);
 			return new ApiCallResult<T>(sr.ResponseCode, sr.Result.result, sr.RawResult, sr.IsEmpty);
 		}
 
+		/// <summary>
+		/// Perform a POST request to the specified URI and deserialize the result into an instance of the specified type
+		/// </summary>
+		/// <typeparam name="T">The type of the result</typeparam>
+		/// <param name="uri">The URI of the resource</param>
+		/// <param name="mimeType">The HTTP mime-type of the body content. Ignored if <paramref name="body"/> is null</param>
+		/// <param name="body">The content of the body. May be null.</param>
+		/// <returns></returns>
 		private Task<ApiCallResult<T>> DoPostAsync<T>(string uri, string mimeType, string body = null) where T : class
 		{
 			return DoRequestAsync<T>("POST", uri, body, mimeType);

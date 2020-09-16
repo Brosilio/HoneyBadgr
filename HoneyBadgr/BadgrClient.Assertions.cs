@@ -34,7 +34,7 @@ namespace HoneyBadgr
 		public async Task<ApiCallResult<Assertion>> GetSingleAssertion(string entityId)
 		{
 			string url = $"{Endpoints.API_BASE}/{Endpoints.API_ASSERTIONS}/{entityId}";
-			return await DoGetAsync<Assertion>(url);
+			return await DoGetSRAsync<Assertion>(url);
 		}
 
 		/// <summary>
@@ -96,23 +96,6 @@ namespace HoneyBadgr
 		}
 
 		/// <summary>
-		/// Get a list of <see cref="Assertion"/>s for a single issuer.
-		/// <para>Statuses:</para>
-		/// <list type="bullet">
-		///		<item>200: OK</item>
-		/// </list>
-		/// </summary>
-		/// <param name="issuerId">The ID of the issuer</param>
-		/// <param name="recipient">A recipient ID to filter by</param>
-		/// <param name="num">Request pagination of the results</param>
-		/// <param name="includeExpired">Include expired assertions</param>
-		/// <param name="includeRevoked">Include revoked assertions</param>
-		public async Task<ApiCallResult<Assertion[]>> GetAssertions(string issuerId, string recipient, int num, bool includeExpired, bool includeRevoked)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
 		/// Issue a new <see cref="Assertion"/> to a single recipient.
 		/// <para>Statuses:</para>
 		/// <list type="bullet">
@@ -122,7 +105,7 @@ namespace HoneyBadgr
 		/// </summary>
 		public async Task IssueNewAssertion()
 		{
-
+			throw new NotImplementedException();
 		}
 	}
 }
