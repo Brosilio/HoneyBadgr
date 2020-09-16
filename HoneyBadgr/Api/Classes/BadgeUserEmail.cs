@@ -9,31 +9,31 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// 
 		/// </summary>
-		public string entityType;
+		public string entityType { get; set; }
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public string entityId;
+		public string entityId { get; set; }
 
 		/// <summary>
 		/// Email address associated with a <see cref="BadgeUser"/>
 		/// </summary>
-		public string email;
+		public string email { get; set; }
 
 		/// <summary>
 		/// True if the email address has been verified by the user
 		/// </summary>
-		public bool verified;
+		public bool verified { get; set; }
 
 		/// <summary>
 		/// True for a single email address. Is used for email notifications
 		/// </summary>
-		public bool primary;
+		public bool primary { get; set; }
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public string caseVariants;
+		public string caseVariants { get; set; }
 	}
 }

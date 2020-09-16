@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace HoneyBadgr.Api
 {
@@ -18,7 +19,7 @@ namespace HoneyBadgr.Api
 		/// <summary>
 		/// The resulting data from the API call.
 		/// </summary>
-		public T Result { get; }
+		public T Result { get; set; }
 
 		/// <summary>
 		/// The data of the response as a string.

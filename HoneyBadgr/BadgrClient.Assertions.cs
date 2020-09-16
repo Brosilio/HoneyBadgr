@@ -17,7 +17,6 @@ namespace HoneyBadgr
 		///		<item>400: Validation error</item>
 		/// </list>
 		/// </summary>
-		/// <param name="entityId">The ID of the <see cref="Assertion"/> to revoke</param>
 		public async Task RevokeMultipleAssertions()
 		{
 			throw new NotImplementedException();
@@ -31,10 +30,11 @@ namespace HoneyBadgr
 		///		<item>404: Assertion not found</item>
 		/// </list>
 		/// </summary>
-		/// <param name="entityId">The ID of the <see cref="Assertion"/> to revoke</param>
+		/// <param name="entityId">The ID of the <see cref="Assertion"/> to get</param>
 		public async Task<ApiCallResult<Assertion>> GetSingleAssertion(string entityId)
 		{
-			throw new NotImplementedException();
+			string url = $"{Endpoints.API_BASE}/{Endpoints.API_ASSERTIONS}/{entityId}";
+			return await DoGetAsync<Assertion>(url);
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace HoneyBadgr
 		/// </summary>
 		/// <param name="entityId">The <see cref="Assertion"/> to issue</param>
 		/// <param name="assertion">The recipient's ID</param>
-		public async Task IssueAssertion(string entityId, Assertion assertion)
+		public async Task<ApiCallResult<BackpackAssertion>> IssueAssertion(string entityId, Assertion assertion)
 		{
 			throw new NotImplementedException();
 		}

@@ -9,35 +9,35 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// “BadgeUser”
 		/// </summary>
-		public string entityType;
+		public string entityType { get; set; }
 
 		/// <summary>
 		/// Unique identifier for this <see cref="BadgeUser"/>
 		/// </summary>
-		public string entityId;
+		public string entityId { get; set; }
 
 		/// <summary>
 		/// The user's first name
 		/// </summary>
-		public string firstName;
+		public string firstName { get; set; }
 
 		/// <summary>
 		/// The user's last name
 		/// </summary>
-		public string lastName;
+		public string lastName { get; set; }
 
 		/// <summary>
 		/// The emails the user has provided
 		/// </summary>
-		public BadgeUserEmail[] emails;
+		public BadgeUserEmail[] emails { get; set; }
 
-		public string url;
-		public string telephone;
-		public string agreedTermsVersion;
-		public string hasAgreedToLatestTermsVersion;
-		public string marketingOptIn;
-		public string badgrDomain;
-		public string hasPasswordSet;
-		public string recipient;
+		public string url { get; set; }
+		public string telephone { get; set; }
+		public string agreedTermsVersion { get; set; }
+		public string hasAgreedToLatestTermsVersion { get; set; }
+		public string marketingOptIn { get; set; }
+		public string badgrDomain { get; set; }
+		public string hasPasswordSet { get; set; }
+		public string recipient { get; set; }
 	}
 }

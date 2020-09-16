@@ -9,21 +9,21 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// Either the hash of the identity or the plaintext value
 		/// </summary>
-		public string identity;
+		public string identity { get; set; }
 
 		/// <summary>
 		/// Whether or not the identity value is hashed.
 		/// </summary>
-		public bool hashed;
+		public bool hashed { get; set; }
 
 		/// <summary>
 		/// "email", "openBadgeId", "telephone", "url"
 		/// </summary>
-		public string type; // TODO: convert to enum
+		public string type { get; set; } // TODO: convert to enum
 
 		/// <summary>
 		/// The plaintext identity
 		/// </summary>
-		public string plaintextIdentity;
+		public string plaintextIdentity { get; set; }
 	}
 }

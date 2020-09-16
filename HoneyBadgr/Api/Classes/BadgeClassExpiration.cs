@@ -6,7 +6,7 @@ namespace HoneyBadgr.Api.Classes
 {
 	public class BadgeClassExpiration
 	{
-		public string amount;
-		public string duration;
+		public string amount { get; set; }
+		public string duration { get; set; }
 	}
 }

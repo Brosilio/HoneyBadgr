@@ -13,71 +13,84 @@ namespace HoneyBadgr
 {
 	public partial class BadgrClient
 	{
-		private AccessToken authorization;
-		private HttpClient client = new HttpClient();
+		private string authToken;
+		private HttpClient client;
 
-
-		public BadgrClient() { }
-
-		public BadgrClient(string accessToken)
+		public BadgrClient()
 		{
-			authorization = new AccessToken()
-			{
-				token = accessToken
-			};
+			client = new HttpClient();
 		}
 
-		public async Task<ApiCallResult<AuthResponse>> GetAccessToken(string username, string password)
+		private string MakeQueryString(string uri, params string[] queries)
 		{
-			string url = $"{Endpoints.API_AUTH}{Endpoints.API_TOKEN}";
-			ApiCallResult<AuthResponse> res = await DoPostAsync<AuthResponse>(url, $"username={username}&password={password}");
-			return res;
+			StringBuilder sb = new StringBuilder();
+			sb.Append(uri);
+
+			if (queries.Length == 0)
+				return sb.ToString();
+
+			sb.Append("?");
+			for(int i = 0; i < queries.Length; i++)
+			{
+				sb.Append(queries[i]);
+
+				if(i < queries.Length)
+					sb.Append("&");
+			}
+
+			return sb.ToString();
+		}
+
+		private string AppendQuery(string uri, string param, object value)
+		{
+			if (param == null || value == null)
+				return uri;
+
+			if (!uri.EndsWith("&"))
+				uri += "&";
+
+			return uri + $"{param}={value.ToString()}";
 		}
 
 		private Task<ApiCallResult<T>> DoGetAsync<T>(string uri) where T : class
 		{
-			return DoRequestAsync<T>("GET", uri, null);
+			return DoRequestAsync<T>("GET", uri, null, null);
 		}
 
-		private Task<ApiCallResult<T>> DoPostAsync<T>(string uri, string body = null) where T : class
+		private async Task<ApiCallResult<T>> DoGetSRAsync<T>(string uri) where T : class
 		{
-			return DoRequestAsync<T>("POST", uri, body);
+			var sr = await DoGetAsync<StatusResult<T>>(uri);
+			return new ApiCallResult<T>(sr.ResponseCode, sr.Result.result, sr.RawResult, sr.IsEmpty);
 		}
 
-		private async Task<ApiCallResult<T>> DoRequestAsync<T>(string method, string uri, string body) where T : class
+		private Task<ApiCallResult<T>> DoPostAsync<T>(string uri, string mimeType, string body = null) where T : class
+		{
+			return DoRequestAsync<T>("POST", uri, body, mimeType);
+		}
+
+		private async Task<ApiCallResult<T>> DoRequestAsync<T>(string method, string uri, string body, string mimeType = "application/json") where T : class
 		{
 			HttpRequestMessage req = new HttpRequestMessage(new HttpMethod(method), uri);
-			client.DefaultRequestHeaders
-
-			if(authorization != null)
-				req.Headers["Authorization"] = $"Bearer {authorization.token}";
-			req.ContentType = "application/x-www-form-urlencoded";
 
 			if (body != null)
 			{
-				byte[] data = Encoding.Default.GetBytes(body);
-				await req.GetRequestStream().WriteAsync(data, 0, data.Length);
+				req.Content = new StringContent(body);
+				req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(mimeType);
 			}
 
-			if (!(await req.GetResponseAsync() is HttpWebResponse httpResponse))
-				return null;
-
-			string responseBody = null;
-			using (StreamReader reader = new StreamReader(httpResponse.GetResponseStream()))
-			{
-				responseBody = await reader.ReadToEndAsync();
-			}
-
-			Console.WriteLine(responseBody);
+			HttpResponseMessage hrm = await client.SendAsync(req);
+			string responseBody = await hrm.Content.ReadAsStringAsync();
 
 			T obj = null;
-			if (!string.IsNullOrWhiteSpace(responseBody) && httpResponse.ContentType == "application/json")
+			string mType = hrm.Content.Headers.ContentType.MediaType?.ToLower();
+			if (!string.IsNullOrWhiteSpace(responseBody) && (mType == "application/json" || mType == "application/ld+json"))
 			{
 				obj = JsonSerializer.Deserialize<T>(responseBody);
 			}
 
+			Console.WriteLine($"type: {typeof(T)}");
 
-			ApiCallResult<T> result = new ApiCallResult<T>((int)httpResponse.StatusCode, obj, responseBody, string.IsNullOrWhiteSpace(responseBody));
+			ApiCallResult<T> result = new ApiCallResult<T>((int)hrm.StatusCode, obj, responseBody, string.IsNullOrWhiteSpace(responseBody));
 			return result;
 		}
 	}

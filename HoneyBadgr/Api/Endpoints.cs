@@ -20,5 +20,15 @@ namespace HoneyBadgr.Api
 		/// The endpoint for retrieving an access token with username and password
 		/// </summary>
 		public const string API_TOKEN = "token";
+
+		/// <summary>
+		/// The endpoint for assertion wrangling
+		/// </summary>
+		public const string API_ASSERTIONS = "assertions";
+
+		/// <summary>
+		/// The endpoint for issuer wrangling
+		/// </summary>
+		public const string API_ISSUERS = "issuers";
 	}
 }

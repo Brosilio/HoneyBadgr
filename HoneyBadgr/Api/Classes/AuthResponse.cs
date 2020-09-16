@@ -9,21 +9,21 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// The access token
 		/// </summary>
-		public string accessToken;
+		public string access_token { get; set; }
 
 		/// <summary>
 		/// The type of the access token (probably "Bearer")
 		/// </summary>
-		public string tokenType;
+		public string token_type { get; set; }
 
 		/// <summary>
 		/// Seconds until this token expires
 		/// </summary>
-		public int expiresInSeconds;
+		public int expires_in { get; set; }
 
 		/// <summary>
-		/// The refresh token, used for re-validating the <see cref="accessToken"/> to avoid re-entry of username and password
+		/// The refresh token, used for re-validating the <see cref="access_token"/> to avoid re-entry of username and password
 		/// </summary>
-		public string refreshToken;
+		public string refresh_token { get; set; }
 	}
 }

@@ -12,6 +12,6 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// Access token to use in the Authorization header
 		/// </summary>
-		public string token;
+		public string token { get; set; }
 	}
 }
