@@ -3,6 +3,7 @@ using HoneyBadgr.Api.Classes;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -13,6 +14,8 @@ namespace HoneyBadgr
 	public partial class BadgrClient
 	{
 		private AccessToken authorization;
+		private HttpClient client = new HttpClient();
+
 
 		public BadgrClient() { }
 
@@ -43,8 +46,9 @@ namespace HoneyBadgr
 
 		private async Task<ApiCallResult<T>> DoRequestAsync<T>(string method, string uri, string body) where T : class
 		{
-			HttpWebRequest req = HttpWebRequest.CreateHttp(uri);
-			req.Method = method.ToUpper();
+			HttpRequestMessage req = new HttpRequestMessage(new HttpMethod(method), uri);
+			client.DefaultRequestHeaders
+
 			if(authorization != null)
 				req.Headers["Authorization"] = $"Bearer {authorization.token}";
 			req.ContentType = "application/x-www-form-urlencoded";
