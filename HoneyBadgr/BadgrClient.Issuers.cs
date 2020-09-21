@@ -35,7 +35,7 @@ namespace HoneyBadgr
 		{
 			string uri = $"{Endpoints.API_BASE}/{Endpoints.API_ISSUERS}/{entityId}/{Endpoints.API_ASSERTIONS}";
 			AppendQuery(uri, "recipient", recipient);
-			if (num != -1) AppendQuery(uri, "num", num);
+			if (num > -1) AppendQuery(uri, "num", num);
 			if (includeExpired) AppendQuery(uri, "include_expired", true);
 			if (includeRevoked) AppendQuery(uri, "include_revoked", true);
 
@@ -43,7 +43,7 @@ namespace HoneyBadgr
 		}
 
 		/// <summary>
-		/// Issue an <see cref="Assertion"/> to a single recipient.
+		/// Issue a new <see cref="Assertion"/> to a single recipient.
 		/// <para>Statuses:</para>
 		/// <list type="bullet">
 		///		<item>201: Successfully created</item>
@@ -52,7 +52,7 @@ namespace HoneyBadgr
 		/// </summary>
 		/// <param name="entityId">The <see cref="Issuer.entityId" /> issuer ID</param>
 		/// <param name="assertion">The recipient's ID</param>
-		public async Task<ApiCallResult<BackpackAssertion>> IssueAssertion(string entityId, Assertion assertion)
+		public async Task<ApiCallResult<BackpackAssertion>> IssueNewAssertion(string entityId, Assertion assertion)
 		{
 			string uri = $"{Endpoints.API_BASE}/issuers/{entityId}/assertions";
 			return await DoPostAsync<BackpackAssertion>(uri, "application/json", JsonSerializer.Serialize<Assertion>(assertion));

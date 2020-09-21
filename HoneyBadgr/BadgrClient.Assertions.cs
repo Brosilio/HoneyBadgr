@@ -83,16 +83,17 @@ namespace HoneyBadgr
 		}
 
 		/// <summary>
-		/// Issue a new <see cref="Assertion"/> to a single recipient.
+		/// Issue an <see cref="Assertion"/> to a single recipient.
 		/// <para>Statuses:</para>
 		/// <list type="bullet">
 		///		<item>201: Successfully created</item>
 		///		<item>400: Validation error</item>
 		/// </list>
 		/// </summary>
-		public async Task IssueNewAssertion()
+		public async Task<ApiCallResult<BackpackAssertion>> IssueAssertion(string issuerId, Assertion assertion)
 		{
-			throw new NotImplementedException();
+			string uri = $"{Endpoints.API_BASE}/badgeclasses/{issuerId}/assertions";
+			return await DoPostAsync<BackpackAssertion>(uri, "application/json", JsonSerializer.Serialize<Assertion>(assertion));
 		}
 	}
 }

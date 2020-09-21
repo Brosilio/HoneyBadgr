@@ -110,8 +110,6 @@ namespace HoneyBadgr
 				obj = JsonSerializer.Deserialize<T>(responseBody);
 			}
 
-			Console.WriteLine($"type: {typeof(T)}");
-
 			ApiCallResult<T> result = new ApiCallResult<T>((int)hrm.StatusCode, obj, responseBody, string.IsNullOrWhiteSpace(responseBody));
 			return result;
 		}
