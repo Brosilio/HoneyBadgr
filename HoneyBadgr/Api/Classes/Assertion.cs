@@ -6,6 +6,20 @@ namespace HoneyBadgr.Api.Classes
 {
 	public class Assertion
 	{
+		public Assertion()
+		{
+
+		}
+
+		public Assertion(string badgeclass, BadgeRecipient recipient, string narrative, AssertionEvidence[] evidence, string expires)
+		{
+			this.badgeclass = badgeclass;
+			this.recipient = recipient;
+			this.narrative = narrative;
+			this.evidence = evidence;
+			this.expires = expires;
+		}
+
 		/// <summary>
 		/// "Assertion"
 		/// </summary>
