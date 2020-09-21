@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using HoneyBadgr.Api;
 using HoneyBadgr.Api.Classes;
@@ -67,20 +68,6 @@ namespace HoneyBadgr
 			throw new NotImplementedException();
 		}
 
-		/// <summary>
-		/// Issue an <see cref="Assertion"/> to a single recipient.
-		/// <para>Statuses:</para>
-		/// <list type="bullet">
-		///		<item>201: Successfully created</item>
-		///		<item>400: Validation error</item>
-		/// </list>
-		/// </summary>
-		/// <param name="entityId">The <see cref="Assertion"/> to issue</param>
-		/// <param name="assertion">The recipient's ID</param>
-		public async Task<ApiCallResult<BackpackAssertion>> IssueAssertion(string entityId, Assertion assertion)
-		{
-			throw new NotImplementedException();
-		}
 
 		/// <summary>
 		/// Issue multiple copies of the same <see cref="BadgeClass"/> to multiple <see cref="BadgeRecipient"/>s.

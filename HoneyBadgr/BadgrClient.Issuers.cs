@@ -41,5 +41,21 @@ namespace HoneyBadgr
 
 			return DoGetSRAsync<Assertion[]>(uri);
 		}
+
+		/// <summary>
+		/// Issue an <see cref="Assertion"/> to a single recipient.
+		/// <para>Statuses:</para>
+		/// <list type="bullet">
+		///		<item>201: Successfully created</item>
+		///		<item>400: Validation error</item>
+		/// </list>
+		/// </summary>
+		/// <param name="entityId">The <see cref="Issuer.entityId" /> issuer ID</param>
+		/// <param name="assertion">The recipient's ID</param>
+		public async Task<ApiCallResult<BackpackAssertion>> IssueAssertion(string entityId, Assertion assertion)
+		{
+			string uri = $"{Endpoints.API_BASE}/issuers/{entityId}/assertions";
+			return await DoPostAsync<BackpackAssertion>(uri, "application/json", JsonSerializer.Serialize<Assertion>(assertion));
+		}
 	}
 }
