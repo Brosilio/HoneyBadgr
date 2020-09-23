@@ -84,6 +84,6 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// 
 		/// </summary>
-		public string extensions { get; set; }
+		//public string extensions { get; set; }
 	}
 }

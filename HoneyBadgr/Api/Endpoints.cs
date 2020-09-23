@@ -9,7 +9,7 @@ namespace HoneyBadgr.Api
 		/// <summary>
 		/// The base API endpoint. Change this if you want to use a different server.
 		/// </summary>
-		public const string API_BASE = "https://api.badgr.io/v2/";
+		public const string API_BASE = "https://api.badgr.io/v2";
 
 		/// <summary>
 		/// The access token endpoint. Change if you want to use a different server.

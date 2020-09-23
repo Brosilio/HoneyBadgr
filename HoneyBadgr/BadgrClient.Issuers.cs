@@ -15,11 +15,20 @@ namespace HoneyBadgr
 		/// Get a list of <see cref="Issuer"/>s for the authenticated client.
 		/// </summary>
 		/// <returns></returns>
-		public Task<ApiCallResult<Issuer[]>> GetIssuers()
+		public Task<ApiCallResult<Issuer[]>> GetIssuersAsync()
 		{
 			string uri = $"{Endpoints.API_BASE}/{Endpoints.API_ISSUERS}";
 
 			return DoGetSRAsync<Issuer[]>(uri);
+		}
+
+		/// <summary>
+		/// Get a list of <see cref="Issuer"/>s for the authenticated client.
+		/// </summary>
+		/// <returns></returns>
+		public ApiCallResult<Issuer[]> GetIssuers()
+		{
+			return GetIssuersAsync().GetAwaiter().GetResult();
 		}
 
 		/// <summary>
@@ -31,7 +40,7 @@ namespace HoneyBadgr
 		/// <param name="includeExpired">Include expired assertions</param>
 		/// <param name="includeRevoked">Include revoked assertions</param>
 		/// <returns></returns>
-		public Task<ApiCallResult<Assertion[]>> GetIssuerAssertions(string entityId, string recipient = null, int num = -1, bool includeExpired = false, bool includeRevoked = false)
+		public Task<ApiCallResult<Assertion[]>> GetIssuerAssertionsAsync(string entityId, string recipient = null, int num = -1, bool includeExpired = false, bool includeRevoked = false)
 		{
 			string uri = $"{Endpoints.API_BASE}/{Endpoints.API_ISSUERS}/{entityId}/{Endpoints.API_ASSERTIONS}";
 			AppendQuery(uri, "recipient", recipient);
@@ -43,6 +52,20 @@ namespace HoneyBadgr
 		}
 
 		/// <summary>
+		/// Get a list of <see cref="Assertion"/>s for a single <see cref="Issuer"/>.
+		/// </summary>
+		/// <param name="entityId">The ID of the issuer from which to get assertions</param>
+		/// <param name="recipient">The ID of a recipient to filter results by</param>
+		/// <param name="num">Request pagination of the results</param>
+		/// <param name="includeExpired">Include expired assertions</param>
+		/// <param name="includeRevoked">Include revoked assertions</param>
+		/// <returns></returns>
+		public ApiCallResult<Assertion[]> GetIssuerAssertions(string entityId, string recipient = null, int num = -1, bool includeExpired = false, bool includeRevoked = false)
+		{
+			return GetIssuerAssertionsAsync(entityId, recipient, num, includeExpired, includeRevoked).GetAwaiter().GetResult();
+		}
+
+		/// <summary>
 		/// Issue a new <see cref="Assertion"/> to a single recipient.
 		/// <para>Statuses:</para>
 		/// <list type="bullet">
@@ -50,12 +73,27 @@ namespace HoneyBadgr
 		///		<item>400: Validation error</item>
 		/// </list>
 		/// </summary>
-		/// <param name="entityId">The <see cref="Issuer.entityId" /> issuer ID</param>
-		/// <param name="assertion">The recipient's ID</param>
-		public async Task<ApiCallResult<BackpackAssertion>> IssueNewAssertion(string entityId, Assertion assertion)
+		/// <param name="entityId">The issuer ID</param>
+		/// <param name="assertion">A new <see cref="Assertion"/> to issue</param>
+		public async Task<ApiCallResult<BackpackAssertion>> IssueNewAssertionAsync(string entityId, Assertion assertion)
 		{
 			string uri = $"{Endpoints.API_BASE}/issuers/{entityId}/assertions";
-			return await DoPostAsync<BackpackAssertion>(uri, "application/json", JsonSerializer.Serialize<Assertion>(assertion));
+			return await DoPostAsync<BackpackAssertion, Assertion>(uri, assertion);
+		}
+
+		/// <summary>
+		/// Issue a new <see cref="Assertion"/> to a single recipient.
+		/// <para>Statuses:</para>
+		/// <list type="bullet">
+		///		<item>201: Successfully created</item>
+		///		<item>400: Validation error</item>
+		/// </list>
+		/// </summary>
+		/// <param name="entityId">The issuer ID</param>
+		/// <param name="assertion">A new <see cref="Assertion"/> to issue</param>
+		public ApiCallResult<BackpackAssertion> IssueNewAssertion(string entityId, Assertion assertion)
+		{
+			return IssueNewAssertionAsync(entityId, assertion).GetAwaiter().GetResult();
 		}
 	}
 }

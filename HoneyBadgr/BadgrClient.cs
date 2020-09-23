@@ -30,11 +30,11 @@ namespace HoneyBadgr
 				return sb.ToString();
 
 			sb.Append("?");
-			for(int i = 0; i < queries.Length; i++)
+			for (int i = 0; i < queries.Length; i++)
 			{
 				sb.Append(queries[i]);
 
-				if(i < queries.Length)
+				if (i < queries.Length)
 					sb.Append("&");
 			}
 
@@ -80,24 +80,35 @@ namespace HoneyBadgr
 		/// <summary>
 		/// Perform a POST request to the specified URI and deserialize the result into an instance of the specified type
 		/// </summary>
-		/// <typeparam name="T">The type of the result</typeparam>
+		/// <typeparam name="TResult">The type of the result</typeparam>
 		/// <param name="uri">The URI of the resource</param>
-		/// <param name="mimeType">The HTTP mime-type of the body content. Ignored if <paramref name="body"/> is null</param>
 		/// <param name="body">The content of the body. May be null.</param>
 		/// <returns></returns>
-		private Task<ApiCallResult<T>> DoPostAsync<T>(string uri, string mimeType, string body = null) where T : class
+		private Task<ApiCallResult<TResult>> DoPostAsync<TResult, TBody>(string uri, TBody body)
+			where TResult : class
+			where TBody : class
+		{
+			JsonSerializerOptions jso = new JsonSerializerOptions()
+			{
+				IgnoreNullValues = true
+			};
+
+			return DoRequestAsync<TResult>("POST", uri, JsonSerializer.Serialize<TBody>(body, jso), "application/json");
+		}
+
+		private Task<ApiCallResult<T>> DoPostAsync<T>(string uri, string mimeType, string body) where T : class
 		{
 			return DoRequestAsync<T>("POST", uri, body, mimeType);
 		}
 
-		private async Task<ApiCallResult<T>> DoRequestAsync<T>(string method, string uri, string body, string mimeType = "application/json") where T : class
+		private async Task<ApiCallResult<T>> DoRequestAsync<T>(string method, string uri, string body, string mimeType) where T : class
 		{
 			HttpRequestMessage req = new HttpRequestMessage(new HttpMethod(method), uri);
 
 			if (body != null)
 			{
 				req.Content = new StringContent(body);
-				req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(mimeType);
+				req.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(mimeType ?? "application/json");
 			}
 
 			HttpResponseMessage hrm = await client.SendAsync(req);

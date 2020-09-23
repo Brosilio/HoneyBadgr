@@ -18,7 +18,7 @@ namespace HoneyBadgr
 		///		<item>400: Validation error</item>
 		/// </list>
 		/// </summary>
-		public async Task RevokeMultipleAssertions()
+		public async Task RevokeMultipleAssertionsAsync()
 		{
 			throw new NotImplementedException();
 		}
@@ -32,7 +32,7 @@ namespace HoneyBadgr
 		/// </list>
 		/// </summary>
 		/// <param name="entityId">The ID of the <see cref="Assertion"/> to get</param>
-		public async Task<ApiCallResult<Assertion>> GetSingleAssertion(string entityId)
+		public async Task<ApiCallResult<Assertion>> GetSingleAssertionAsync(string entityId)
 		{
 			string url = $"{Endpoints.API_BASE}/{Endpoints.API_ASSERTIONS}/{entityId}";
 			return await DoGetSRAsync<Assertion>(url);
@@ -48,7 +48,7 @@ namespace HoneyBadgr
 		/// </list>
 		/// </summary>
 		/// <param name="entityId">The ID of the <see cref="Assertion"/> to revoke</param>
-		public async Task RevokeSingleAssertion(string entityId)
+		public async Task RevokeSingleAssertionAsync(string entityId)
 		{
 			throw new NotImplementedException();
 		}
@@ -63,7 +63,7 @@ namespace HoneyBadgr
 		/// </list>
 		/// </summary>
 		/// <param name="assertion">The assertion to update.</param>
-		public async Task UpdateAssertion(Assertion assertion)
+		public async Task UpdateAssertionAsync(Assertion assertion)
 		{
 			throw new NotImplementedException();
 		}
@@ -77,23 +77,9 @@ namespace HoneyBadgr
 		///		<item>400: Validation error</item>
 		/// </list>
 		/// </summary>
-		public async Task IssueMultipleAssertions()
+		public async Task IssueMultipleAssertionsAsync()
 		{
 			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Issue an <see cref="Assertion"/> to a single recipient.
-		/// <para>Statuses:</para>
-		/// <list type="bullet">
-		///		<item>201: Successfully created</item>
-		///		<item>400: Validation error</item>
-		/// </list>
-		/// </summary>
-		public async Task<ApiCallResult<BackpackAssertion>> IssueAssertion(string issuerId, Assertion assertion)
-		{
-			string uri = $"{Endpoints.API_BASE}/badgeclasses/{issuerId}/assertions";
-			return await DoPostAsync<BackpackAssertion>(uri, "application/json", JsonSerializer.Serialize<Assertion>(assertion));
 		}
 	}
 }

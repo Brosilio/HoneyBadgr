@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace HoneyBadgr.Api.Classes
 {
@@ -11,13 +13,23 @@ namespace HoneyBadgr.Api.Classes
 
 		}
 
-		public Assertion(string badgeclass, BadgeRecipient recipient, string narrative, AssertionEvidence[] evidence, string expires)
+		public Assertion(BadgeRecipient recipient)
 		{
-			this.badgeclass = badgeclass;
+			this.recipient = recipient;
+			this.issuedOn = DateTime.Now;
+		}
+
+		public Assertion(string issuerId, BadgeClass badge, BadgeRecipient recipient, string narriative, AssertionEvidence[] evidence, string expires, DateTime issuedOn)
+		{
+			//this.badgeclass = badge.entityId;
+			//this.badgeclassName = badge.name;
+			this.badgeclassOpenBadgeId = badge.openBadgeId;
 			this.recipient = recipient;
 			this.narrative = narrative;
-			this.evidence = evidence;
+			this.evidence = evidence ?? Array.Empty<AssertionEvidence>();
 			this.expires = expires;
+			this.issuer = issuerId;
+			this.issuedOn = issuedOn;
 		}
 
 		/// <summary>
@@ -78,7 +90,7 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// Timestamp when this <see cref="Assertion"/> was issued
 		/// </summary>
-		public string issuedOn { get; set; }
+		public DateTime issuedOn { get; set; }
 
 		/// <summary>
 		/// Markdown narrative of the achievement
