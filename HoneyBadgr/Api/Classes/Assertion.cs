@@ -16,7 +16,7 @@ namespace HoneyBadgr.Api.Classes
 		public Assertion(BadgeRecipient recipient)
 		{
 			this.recipient = recipient;
-			this.issuedOn = DateTime.Now;
+			//this.issuedOn = DateTime.Now;
 		}
 
 		public Assertion(string issuerId, BadgeClass badge, BadgeRecipient recipient, string narriative, AssertionEvidence[] evidence, string expires, DateTime issuedOn)
@@ -29,7 +29,7 @@ namespace HoneyBadgr.Api.Classes
 			this.evidence = evidence ?? Array.Empty<AssertionEvidence>();
 			this.expires = expires;
 			this.issuer = issuerId;
-			this.issuedOn = issuedOn;
+			//this.issuedOn = issuedOn;
 		}
 
 		/// <summary>
@@ -90,7 +90,7 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// Timestamp when this <see cref="Assertion"/> was issued
 		/// </summary>
-		public DateTime issuedOn { get; set; }
+		public string issuedOn { get; set; }
 
 		/// <summary>
 		/// Markdown narrative of the achievement
