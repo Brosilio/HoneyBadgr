@@ -44,6 +44,23 @@ namespace HoneyBadgr
 		}
 
 		/// <summary>
+		/// Issues an <see cref="Assertion"/> to a single recipient, by email.
+		/// </summary>
+		/// <param name="badgeClassId">The ID of the badge to issue.</param>
+		/// <param name="email">The email of the user to issue.</param>
+		public async Task<ApiCallResult<BackpackAssertion>> IssueAssertionToEmailAsync(string badgeClassId, string email)
+		{
+			BadgeRecipient recipient = new BadgeRecipient()
+			{
+				hashed = true,
+				identity = email,
+				type = "email"
+			};
+
+			return await IssueAssertionAsync(badgeClassId, new Assertion(recipient));
+		}
+
+		/// <summary>
 		/// Issue an <see cref="Assertion"/> to a single recipient.
 		/// <para>Statuses:</para>
 		/// <list type="bullet">
