@@ -21,7 +21,7 @@ namespace HoneyBadgr
 			string body = $"username={username}&password={password}";
 			string mime = "application/x-www-form-urlencoded";
 			ApiCallResult<AuthResponse> res = await DoPostAsync<AuthResponse>(uri, mime, body);
-			if (res.Success) SetAuthToken(res.Result.access_token);
+			if (res.Success) SetAuthToken(res.Result.access_token, res.Result.refresh_token);
 
 			return res;
 		}
@@ -42,14 +42,24 @@ namespace HoneyBadgr
 		/// </summary>
 		/// <param name="refreshToken">The refresh token, used to refresh the bearer token</param>
 		/// <returns></returns>
-		public async Task<ApiCallResult<object>> RefreshAuthTokenAsync(string refreshToken)
+		public async Task<ApiCallResult<AuthResponse>> RefreshAuthTokenAsync(string refreshToken)
 		{
 			string url = $"{Endpoints.API_AUTH}{Endpoints.API_TOKEN}";
 			string body = $"grant_type=refresh_token&refresh_token={refreshToken}";
 			string mime = "application/x-www-form-urlencoded";
-			ApiCallResult<object> result = await DoPostAsync<object>(url, mime, body);
+			ApiCallResult<AuthResponse> res = await DoPostAsync<AuthResponse>(url, mime, body);
 
-			return result;
+			if (res.Success) SetAuthToken(res.Result.access_token, res.Result.refresh_token);
+
+			return res;
+		}
+
+		/// <summary>
+		/// Refresh the auth token using the currently held refresh token.
+		/// </summary>
+		public async Task<ApiCallResult<AuthResponse>> RefreshAuthTokenAsync()
+		{
+			return await RefreshAuthTokenAsync(refreshToken);
 		}
 
 		/// <summary>
@@ -57,7 +67,7 @@ namespace HoneyBadgr
 		/// </summary>
 		/// <param name="refreshToken">The refresh token, used to refresh the bearer token</param>
 		/// <returns></returns>
-		public ApiCallResult<object> RefreshAuthToken(string refreshToken)
+		public ApiCallResult<AuthResponse> RefreshAuthToken(string refreshToken)
 		{
 			return RefreshAuthTokenAsync(refreshToken).GetAwaiter().GetResult();
 		}
@@ -66,10 +76,13 @@ namespace HoneyBadgr
 		/// Set the auth token for this BadgrClient
 		/// </summary>
 		/// <param name="token">The authorization token. Obtain one by calling <see cref="AuthenticateAsync"/></param>
-		public void SetAuthToken(string token)
+		public void SetAuthToken(string token, string refreshToken)
 		{
-			authToken = token;
-			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+			this.authToken = token;
+			this.refreshToken = refreshToken;
+
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+			//client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 		}
 	}
 }

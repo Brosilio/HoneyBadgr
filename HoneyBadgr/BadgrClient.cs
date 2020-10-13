@@ -5,16 +5,17 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 
 namespace HoneyBadgr
 {
 	public partial class BadgrClient
 	{
+		private readonly HttpClient client;
+		private string refreshToken;
 		private string authToken;
-		private HttpClient client;
 
 		public BadgrClient()
 		{
@@ -88,12 +89,12 @@ namespace HoneyBadgr
 			where TResult : class
 			where TBody : class
 		{
-			JsonSerializerOptions jso = new JsonSerializerOptions()
+			JsonSerializerSettings jso = new JsonSerializerSettings()
 			{
-				IgnoreNullValues = true
+				NullValueHandling = NullValueHandling.Ignore
 			};
 
-			return DoRequestAsync<TResult>("POST", uri, JsonSerializer.Serialize<TBody>(body, jso), "application/json");
+			return DoRequestAsync<TResult>("POST", uri, JsonConvert.SerializeObject(body, jso), "application/json");
 		}
 
 		private Task<ApiCallResult<T>> DoPostAsync<T>(string uri, string mimeType, string body) where T : class
@@ -118,7 +119,7 @@ namespace HoneyBadgr
 			string mType = hrm.Content.Headers.ContentType.MediaType?.ToLower();
 			if (!string.IsNullOrWhiteSpace(responseBody) && (mType == "application/json" || mType == "application/ld+json"))
 			{
-				obj = JsonSerializer.Deserialize<T>(responseBody);
+				obj = JsonConvert.DeserializeObject<T>(responseBody);
 			}
 
 			ApiCallResult<T> result = new ApiCallResult<T>((int)hrm.StatusCode, obj, responseBody, string.IsNullOrWhiteSpace(responseBody));
