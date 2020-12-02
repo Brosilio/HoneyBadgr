@@ -31,13 +31,13 @@ namespace HoneyBadgr.Api.Classes
 		/// </summary>
 		public BadgeUserEmail[] emails { get; set; }
 
-		public string url { get; set; }
-		public string telephone { get; set; }
+		public string[] url { get; set; }
+		public string[] telephone { get; set; }
 		public string agreedTermsVersion { get; set; }
 		public string hasAgreedToLatestTermsVersion { get; set; }
 		public string marketingOptIn { get; set; }
 		public string badgrDomain { get; set; }
 		public string hasPasswordSet { get; set; }
-		public string recipient { get; set; }
+		public BadgeRecipient recipient { get; set; }
 	}
 }

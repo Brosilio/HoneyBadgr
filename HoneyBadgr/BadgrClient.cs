@@ -17,6 +17,16 @@ namespace HoneyBadgr
 		private string refreshToken;
 		private string authToken;
 
+		/// <summary>
+		/// The refresh token for this client, if any.
+		/// </summary>
+		public string RefreshToken => refreshToken;
+
+		/// <summary>
+		/// The auth token for this client, if any.
+		/// </summary>
+		public string AuthToken => authToken;
+
 		public BadgrClient()
 		{
 			client = new HttpClient();
@@ -75,7 +85,7 @@ namespace HoneyBadgr
 		private async Task<ApiCallResult<T>> DoGetSRAsync<T>(string uri) where T : class
 		{
 			var sr = await DoGetAsync<StatusResult<T>>(uri);
-			return new ApiCallResult<T>(sr.ResponseCode, sr.Result.result, sr.RawResult, sr.IsEmpty);
+			return new ApiCallResult<T>(sr.ResponseCode, sr.Result?.result, sr.RawResult, sr.IsEmpty);
 		}
 
 		/// <summary>

@@ -12,9 +12,10 @@ namespace HoneyBadgr.Api.Classes
 
 		}
 
-		public Assertion(BadgeRecipient recipient)
+		public Assertion(BadgeRecipient recipient, bool notify)
 		{
 			this.recipient = recipient;
+			this.notify = notify;
 			//this.issuedOn = DateTime.Now;
 		}
 
@@ -120,5 +121,10 @@ namespace HoneyBadgr.Api.Classes
 		/// Name of the <see cref="BadgeClass"/> to create assertion against, case insensitive
 		/// </summary>
 		public string badgeclassName { get; set; }
+
+		/// <summary>
+		/// Should the recipient be notified of this award?
+		/// </summary>
+		public bool notify { get; set; }
 	}
 }

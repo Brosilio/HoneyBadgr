@@ -34,6 +34,6 @@ namespace HoneyBadgr.Api.Classes
 		/// <summary>
 		/// 
 		/// </summary>
-		public string caseVariants { get; set; }
+		public string[] caseVariants { get; set; }
 	}
 }

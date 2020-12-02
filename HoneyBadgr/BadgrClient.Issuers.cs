@@ -32,15 +32,15 @@ namespace HoneyBadgr
 		/// <summary>
 		/// Get a list of <see cref="Assertion"/>s for a single <see cref="Issuer"/>.
 		/// </summary>
-		/// <param name="entityId">The ID of the issuer from which to get assertions</param>
+		/// <param name="issuerId">The ID of the issuer from which to get assertions</param>
 		/// <param name="recipient">The ID of a recipient to filter results by</param>
 		/// <param name="num">Request pagination of the results</param>
 		/// <param name="includeExpired">Include expired assertions</param>
 		/// <param name="includeRevoked">Include revoked assertions</param>
 		/// <returns></returns>
-		public Task<ApiCallResult<Assertion[]>> GetIssuerAssertionsAsync(string entityId, string recipient = null, int num = -1, bool includeExpired = false, bool includeRevoked = false)
+		public Task<ApiCallResult<Assertion[]>> GetIssuerAssertionsAsync(string issuerId, string recipient = null, int num = -1, bool includeExpired = false, bool includeRevoked = false)
 		{
-			string uri = $"{Endpoints.API_BASE}/{Endpoints.API_ISSUERS}/{entityId}/{Endpoints.API_ASSERTIONS}";
+			string uri = $"{Endpoints.API_BASE}/{Endpoints.API_ISSUERS}/{issuerId}/{Endpoints.API_ASSERTIONS}";
 			AppendQuery(uri, "recipient", recipient);
 			if (num > -1) AppendQuery(uri, "num", num);
 			if (includeExpired) AppendQuery(uri, "include_expired", true);
@@ -92,6 +92,14 @@ namespace HoneyBadgr
 		public ApiCallResult<BackpackAssertion> IssueNewAssertion(string entityId, Assertion assertion)
 		{
 			return IssueNewAssertionAsync(entityId, assertion).GetAwaiter().GetResult();
+		}
+
+		// TODO: docs
+		public async Task<ApiCallResult<BadgeClass[]>> GetIssuerBadgeClassesAsync(string issuerId)
+		{
+			string uri = $"{Endpoints.API_BASE}/issuers/{issuerId}/badgeclasses";
+
+			return await DoGetSRAsync<BadgeClass[]>(uri);
 		}
 	}
 }
