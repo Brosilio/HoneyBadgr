@@ -86,10 +86,10 @@ namespace HoneyBadgr
 		public Task<ApiCallResult<BackpackAssertion[]>> GetBadgeClassAssertionsAsync(string badgeClassId, string recipient = null, int num = -1, bool includeExpired = false, bool includeRevoked = false)
 		{
 			string uri = $"{Endpoints.API_BASE}/badgeclasses/{badgeClassId}/assertions";
-			AppendQuery(uri, "recipient", recipient);
-			if (num > -1) AppendQuery(uri, "num", num);
-			if (includeExpired) AppendQuery(uri, "include_expired", true);
-			if (includeRevoked) AppendQuery(uri, "include_revoked", true);
+			AppendQuery(ref uri, "recipient", recipient);
+			if (num > -1) AppendQuery(ref uri, "num", num);
+			if (includeExpired) AppendQuery(ref uri, "include_expired", true);
+			if (includeRevoked) AppendQuery(ref uri, "include_revoked", true);
 
 			return DoGetSRAsync<BackpackAssertion[]>(uri);
 		}

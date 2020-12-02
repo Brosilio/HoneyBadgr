@@ -41,10 +41,10 @@ namespace HoneyBadgr
 		public Task<ApiCallResult<Assertion[]>> GetIssuerAssertionsAsync(string issuerId, string recipient = null, int num = -1, bool includeExpired = false, bool includeRevoked = false)
 		{
 			string uri = $"{Endpoints.API_BASE}/{Endpoints.API_ISSUERS}/{issuerId}/{Endpoints.API_ASSERTIONS}";
-			AppendQuery(uri, "recipient", recipient);
-			if (num > -1) AppendQuery(uri, "num", num);
-			if (includeExpired) AppendQuery(uri, "include_expired", true);
-			if (includeRevoked) AppendQuery(uri, "include_revoked", true);
+			AppendQuery(ref uri, "recipient", recipient);
+			if (num > -1) AppendQuery(ref uri, "num", num);
+			if (includeExpired) AppendQuery(ref uri, "include_expired", true);
+			if (includeRevoked) AppendQuery(ref uri, "include_revoked", true);
 
 			return DoGetSRAsync<Assertion[]>(uri);
 		}

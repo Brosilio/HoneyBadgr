@@ -52,15 +52,18 @@ namespace HoneyBadgr
 			return sb.ToString();
 		}
 
-		private string AppendQuery(string uri, string param, object value)
+		private void AppendQuery(ref string uri, string param, object value)
 		{
 			if (param == null || value == null)
-				return uri;
+				return;
+
+			if (!uri.Contains("?"))
+				uri += "?";
 
 			if (!uri.EndsWith("&"))
 				uri += "&";
 
-			return uri + $"{param}={value.ToString()}";
+			uri += $"{param}={value}";
 		}
 
 
