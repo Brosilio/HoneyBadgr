@@ -30,6 +30,7 @@ namespace HoneyBadgr
 		public BadgrClient()
 		{
 			client = new HttpClient();
+			var f = client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "curl/7.64.0");
 		}
 
 		private string MakeQueryString(string uri, params string[] queries)

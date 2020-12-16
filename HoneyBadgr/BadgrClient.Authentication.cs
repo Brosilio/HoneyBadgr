@@ -84,5 +84,15 @@ namespace HoneyBadgr
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 			//client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 		}
+
+		/// <summary>
+		/// Clear the auth tokens from the client request headers.
+		/// </summary>
+		public void ClearTokens()
+		{
+			client.DefaultRequestHeaders.Authorization = null;
+			this.authToken = "";
+			this.refreshToken = "";
+		}
 	}
 }
